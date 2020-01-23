@@ -1,0 +1,1 @@
+find / -type f -group flag00 2>/dev/null
