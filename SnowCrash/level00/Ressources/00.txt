@@ -1,1 +1,4 @@
-find / -type f -group flag00 2>/dev/null
+find / -type f -user flag00 2>/dev/null
+cat /usr/sbin/john
+-> https://www.dcode.fr/chiffre-cesar
+-> nottoohardhere

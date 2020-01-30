@@ -1,0 +1,5 @@
+wireshark level02.pcap
+-> Looks like telnet, let's follow the stream
+-> ft_wandr...NDRel.L0L
+# Now hexdump view, we see control codes, 7f is del
+->ft_waNDReL0L
