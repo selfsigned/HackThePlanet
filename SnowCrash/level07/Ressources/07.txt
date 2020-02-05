@@ -1,0 +1,4 @@
+level07:
+-> system call from ENV variable LOGNAME via getenv
+
+export LOGNAME='`getflag`'
