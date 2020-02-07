@@ -1,0 +1,5 @@
+the executable seems to append the numeric value of characters by their index,
+aaa -> abc
+Knowing that we can use a script to reverse the cipher applied to the token
+
+python -c "import sys;print(''.join([chr(ord(v) - i) for i, v in enumerate(sys.argv[1])]))" `cat token`
