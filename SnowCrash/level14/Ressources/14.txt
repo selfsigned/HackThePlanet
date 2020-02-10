@@ -1,0 +1,43 @@
+There doesn't seem to be anything for us to do here... but that's only if we play by the rules
+Let's attack `getflag`
+
+(gdb) b main
+Breakpoint 1 at 0x804894a
+(gdb) r
+Starting program: /bin/getflag 
+
+Breakpoint 1, 0x0804894a in main ()
+(gdb) disas
+[...]
+   0x08048afd <+439>:	call   0x80484b0 <getuid@plt>
+   0x08048b02 <+444>:	mov    %eax,0x18(%esp)
+   0x08048b06 <+448>:	mov    0x18(%esp),%eax
+   0x08048b0a <+452>:	cmp    $0xbbe,%eax
+   0x08048b0f <+457>:	je     0x8048ccb <main+901>
+[...]
+
+We can see that there's a call to getuid and comparaisons to know UIDs,
+looking at /etc/passwd we need to find 3014
+(flag14:x:3014:3014::/home/flag/flag14:/bin/bash)
+
+let's check the last cmp
+
+   0x08048bb6 <+624>:	cmp    $0xbc6,%eax
+   0x08048bbb <+629>:	je     0x8048de5 <main+1183>
+
+(gdb) p 0xbc6
+$1 = 3014
+
+Bingo!
+let's directly jump to 0x8048de5
+
+(gdb) jump *0x8048de5
+Continuing at 0x8048de5.
+7QiHafiNa3HVozsaXkawuYrTstxbpABHD8CPnHJ
+*** stack smashing detected ***: /bin/getflag terminated
+
+We smashed the stack... but got our flag so who cares!
+
+$ su flag14
+Password:
+Congratulation. Type getflag to get the key and send it to me the owner of this livecd :)
