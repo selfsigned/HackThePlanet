@@ -1,11 +1,14 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+unsigned int m;
 
 void v(void)
-
 {
-  char local_20c [520];
+  char buffer[520];
   
-  fgets(local_20c,512,stdin);
-  printf(local_20c);
+  fgets(buffer,512,stdin);
+  printf(buffer);
   if (m == 64) {
     fwrite("Wait what?!\n",1,0xc,stdout);
     system("/bin/sh");
