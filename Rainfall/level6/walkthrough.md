@@ -7,7 +7,7 @@ If only we could call it!
 In comes strcpy to save the day.
 Because the `char* dest` is located before our function pointer in memory, we can override it by overflowing the buffer.
 
-As we can see, the strcpy copies over the entire argv[1].
+As we can see, the strcpy copies over the entire argv[1] without checking the size.
 
 
 We can get the addresses from malloc by running `ltrace`.
