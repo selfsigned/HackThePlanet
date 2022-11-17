@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void m(void)
+{
+	puts("Nope");
+	return;
+}
+
+typedef void (*t_func)();
+
+void n(void)
+{
+	system("/bin/cat /home/user/level7/.pass");
+	return;
+}
+
+void main(int argc, char** argv)
+{
+	char *dest;
+	t_func *func;
+
+	dest = (char *)malloc(64);
+	func = (void **)malloc(4);
+
+	*func = m;
+	strcpy(dest, argv[1]);
+	(*func)();
+	return;
+}
