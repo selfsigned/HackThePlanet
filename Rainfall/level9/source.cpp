@@ -37,5 +37,5 @@ int main(int argc, const char **argv, const char **envp)
 	n_1 = new N(5);
 	n_2 = new N(6);
 	n_1->setAnnotation(argv[1]);
-	return ((n_1->func)(n_2)); // wont compile yet
+	return ((n_2->func)(n_1)); // wont compile yet
 }
