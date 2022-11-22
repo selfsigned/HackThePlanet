@@ -17,12 +17,11 @@ int main(int argc,char **argv)
     exearg[1] = NULL;
     gid = getegid();
     uid = geteuid();
-    setresgid(gid,gid,gid);
-    setresuid(uid,uid,uid);
-    execv("/bin/sh",exearg);
+    setresgid(gid, gid, gid);
+    setresuid(uid, uid, uid);
+    execv("/bin/sh", exearg);
   } else {
-    fwrite("No !\n",1,5,stderr);
+    fwrite("No !\n", 1, 5, stderr);
   }
-
-  return 0;
+  return (0);
 }
