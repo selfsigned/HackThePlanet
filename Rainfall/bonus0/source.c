@@ -1,27 +1,30 @@
 #include <stdio.h>
+#include <strings.h>
+#include <unistd.h>
 
-void p(uint dest, uint s)
+void p(char *dest, char *s)
 {
-    uchar *puVar1;
+    char *terminator;
     char buffer[4096];
     
     puts(s);
-    read(0, &buffer, 4096);
-    puVar1 = strchr(&buffer, 10);
-    *puVar1 = 0;
-    strncpy(dest, &buffer, 20);
+    read(0, buffer, 4096);
+    terminator = strchr((const char*)buffer, '\n');
+    *terminator = '\0';
+    strncpy(dest, buffer, 20);
     return;
 }
 
-char pp(char *dest)
+char *pp(char *dest)
 {
   char a[20]; // [esp+28h] [ebp-30h] BYREF
-  char b[28]; // [esp+3Ch] [ebp-1Ch] BYREF
+  char b[20];
+  size_t len;
 
-  p(a, " - ");
   p(b, " - ");
   strcpy(dest, a);
-  *(_WORD *)&dest[strlen(dest)] = unk_80486A4;
+  len = strlen(dest);
+  dest[len] = ' ';
   return strcat(dest, b);
 }
 
