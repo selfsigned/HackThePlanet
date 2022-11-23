@@ -6,7 +6,7 @@
 int	*auth;
 int	service;
 
-int	main(int argc, const char **argv)
+int	main()
 {
 	char s[5];
 	char v5[2];
