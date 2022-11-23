@@ -11,7 +11,7 @@ int main(int argc, const char **argv)
 	if ( val > 9 )
 		return 1;
 	memcpy(dest, argv[2], 4 * val);
-	if ( val == 1464814662 )
+	if ( val == 0x574F4C46 ) // FLOW
 		execl("/bin/sh", "sh", 0);
 	return 0;
 }
