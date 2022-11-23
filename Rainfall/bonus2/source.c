@@ -5,7 +5,7 @@ int language;
 
 int greetuser(char src)
 {
-	char	dest[20]; // 128bits + 16bits + 8bits = 19 bytes (and added 1 byte of padding)
+	char	dest[20];
 
 	switch (language)
 	{

