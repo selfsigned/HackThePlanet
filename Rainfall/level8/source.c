@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-char	*auth; /* 0x08049aac */
-int		service; /* 0x08049ab0 */
+int	*auth;
+int	service;
 
 int	main(int argc, const char **argv)
 {
