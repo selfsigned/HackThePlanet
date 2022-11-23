@@ -4,7 +4,7 @@
 
 void p(void)
 {
-	uint ret;
+	unsigned int ret;
 	char src[76];
 
 	fflush(stdout);
@@ -16,11 +16,10 @@ void p(void)
 	}
 	puts(src);
 	strdup(src);
-	return;
 }
 
-void main(void)
+int main(void)
 {
 	p();
-	return;
+	return (0);
 }
