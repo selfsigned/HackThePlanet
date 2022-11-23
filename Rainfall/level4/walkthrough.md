@@ -14,7 +14,7 @@
 0x08048497      750c           jne 0x80484a5
 ```
 
-We can see that we need to change the value of the global variable `m` to `0x1025544`, `16930116` in decimal, we obviously can't just add this number of bytes in the buffer and write that with `%n`.
+We can see that we need to change the value of the global variable `m` to `0x1025544`, `16930116` in decimal, we can't just add this number of bytes in the buffer and write that with `%n`, because that results in a broken pipe.
 
 ## Exploiting the pointer
 
