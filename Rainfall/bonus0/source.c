@@ -4,35 +4,35 @@
 
 void p(char *dest, char *s)
 {
-    char *terminator;
-    char buffer[4096];
-    
-    puts(s);
-    read(0, buffer, 4096);
-    terminator = strchr((const char*)buffer, '\n');
-    *terminator = '\0';
-    strncpy(dest, buffer, 20);
-    return;
+	char *terminator;
+	char buffer[4096];
+
+	puts(s);
+	read(0, buffer, 4096);
+	terminator = strchr((const char*)buffer, '\n');
+	*terminator = '\0';
+	strncpy(dest, buffer, 20);
+	return;
 }
 
 char *pp(char *dest)
 {
-  char a[20]; // [esp+28h] [ebp-30h] BYREF
-  char b[20];
-  size_t len;
+	char a[20];
+	char b[20];
+	size_t len;
 
-  p(b, " - ");
-  strcpy(dest, a);
-  len = strlen(dest);
-  dest[len] = ' ';
-  return strcat(dest, b);
+	p(b, " - ");
+	strcpy(dest, a);
+	len = strlen(dest);
+	dest[len] = ' ';
+	return strcat(dest, b);
 }
 
-int main(int argc, const char **argv, const char **envp)
+int main()
 {
-  char s[42];
+	char s[42];
 
-  pp(s);
-  puts(s);
-  return 0;
+	pp(s);
+	puts(s);
+	return 0;
 }
