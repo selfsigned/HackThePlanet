@@ -1,21 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void m(void)
+int m()
 {
-	puts("Nope");
-	return;
+	return puts("Nope");
 }
 
-typedef void (*t_func)();
+typedef int (*t_func)();
 
-void n(void)
+int n()
 {
-	system("/bin/cat /home/user/level7/.pass");
-	return;
+	return system("/bin/cat /home/user/level7/.pass");
 }
 
-void main(int argc, char** argv)
+int main(int argc, char** argv)
 {
 	char *dest;
 	t_func *func;
@@ -25,6 +23,5 @@ void main(int argc, char** argv)
 
 	*func = m;
 	strcpy(dest, argv[1]);
-	(*func)();
-	return;
+	return (*func)();
 }
