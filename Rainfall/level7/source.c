@@ -2,9 +2,9 @@
 #include <time.h>
 #include <stdlib.h>
 
-char	*c; /* 0x08049960 */
+char	*c;
 
-void m() /* 0x080484f4 */
+void m()
 {
 	time_t tVar1;
 
@@ -31,6 +31,6 @@ int main(int argc,char** argv)
 	strcpy((char *)b[1], argv[2]);
 	password = fopen("/home/user/level8/.pass", "r");
 	fgets(c, 68, password);
-	puts("~~"); /* 0x08049928 */
-	return 0; // 0x08048602
+	puts("~~");
+	return (0);
 }

