@@ -28,14 +28,14 @@ class N {
 
 int main(int argc, const char **argv, const char **envp)
 {
-	N *n_1;
-	N *n_2;
+	N *a;
+	N *b;
 
 	if (argc < 2) {
 		exit(1);
 	}
-	n_1 = new N(5);
-	n_2 = new N(6);
-	n_1->setAnnotation(argv[1]);
-	return ((n_2->func)(n_1)); // wont compile yet
+	a = new N(5);
+	b = new N(6);
+	a->setAnnotation(argv[1]);
+	return ( (b->*(b->func))(*a) );
 }
