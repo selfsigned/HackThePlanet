@@ -16,8 +16,8 @@ void n(void)
 }
 
 
-void main(void)
+int main(void)
 {
 	n();
-	return;
+	return (0);
 }
