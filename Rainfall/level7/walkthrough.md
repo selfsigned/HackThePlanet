@@ -14,8 +14,8 @@ End of assembler dump.
 (gdb) p m
 $1 = {<text variable, no debug info>} 0x80484f4 <m>
 ```
-0x08049928 value of puts in GOT
-0x080484f4 value of m
+`0x08049928` value of puts in GOT
+`0x080484f4` value of m
 
 By running `ltrace` we see that we can change the destination address of the second strcpy call:
 ```shell
