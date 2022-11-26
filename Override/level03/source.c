@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <strings.h>
 
-int decrypt(char a1)
+int decrypt(char input)
 {
   unsigned int i; // [esp+20h] [ebp-28h]
   unsigned int v3; // [esp+24h] [ebp-24h]
@@ -11,7 +11,7 @@ int decrypt(char a1)
   strcpy(v4, "Q}|u`sfg~sf{}|a3");
   v3 = strlen(v4);
   for ( i = 0; i < v3; ++i )
-    v4[i] ^= a1;
+    v4[i] ^= input;
   if ( !strcmp(v4, "Congratulations!") )
     return system("/bin/sh");
   else
