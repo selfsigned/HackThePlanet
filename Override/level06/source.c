@@ -10,18 +10,15 @@ _BOOL4 auth(char *s, int a2)
   v5 = strnlen(s, 32);
   if ( v5 <= 5 )
     return 1;
-  if ( ptrace(PTRACE_TRACEME, 0, 1, 0) == -1 )
-  {
+  if ( ptrace(PTRACE_TRACEME, 0, 1, 0) == -1 ) {
     puts("\x1B[32m.---------------------------.");
     puts("\x1B[31m| !! TAMPERING DETECTED !!  |");
     puts("\x1B[32m'---------------------------'");
     return 1;
   }
-  else
-  {
+  else {
     v4 = (s[3] ^ 0x1337) + 6221293;
-    for ( i = 0; i < v5; ++i )
-    {
+    for ( i = 0; i < v5; ++i ) {
       if ( s[i] <= 31 )
         return 1;
       v4 += (v4 ^ (unsigned int)s[i]) % 0x539;
@@ -46,7 +43,7 @@ int main(int argc, const char **argv, const char **envp)
   puts("***** NEW ACCOUNT DETECTED ********");
   puts("***********************************");
   printf("-> Enter Serial: ");
-  __isoc99_scanf(&unk_8048A60, &v4);
+  scanf("%u", &v4);
   if ( auth(s, v4) )
     return 1;
   puts("Authenticated!");
