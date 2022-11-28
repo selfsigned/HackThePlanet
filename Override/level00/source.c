@@ -3,14 +3,14 @@
 
 int main()
 {
-	int v4;
+	int input;
 
 	puts("***********************************");
 	puts("* \t     -Level00 -\t\t  *");
 	puts("***********************************");
 	printf("Password:");
-	scanf("%d", &v4);
-	if (v4 == 5276)
+	scanf("%d", &input);
+	if (input == 5276)
 	{
 		puts("\nAuthenticated!");
 		system("/bin/sh");
