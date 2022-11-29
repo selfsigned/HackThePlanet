@@ -41,7 +41,7 @@ Mapped address spaces:
         0xf7fcf000 0xf7fd0000     0x1000   0x1a2000 /lib32/libc-2.15.so
 [...]
 
-(gdb) find 0xf7e2c000, 0xf7fd0000 "/bin/sh"
+(gdb) find 0xf7e2c000, 0xf7fd0000, "/bin/sh"
 0xf7f897ec
 ```
 Okay, `system -> 0xf7e6aed0` `exit -> 0xf7e5eb70` `"/bin/sh" -> 0xf7f897ec`
