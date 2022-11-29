@@ -37,6 +37,7 @@ Continuing.
 [Inferior 1 (process 1844) exited with code 01]
 ```
 😈
+We could also just set the value inside the eax register to 0 after the call to ptrace.
 ### No peeking
 
 Let's take a look at what our input is compared to now shall we?
