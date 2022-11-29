@@ -117,17 +117,14 @@ int main(int argc, const char **argv, const char **envp)
 		if (!memcmp(s, "store", 5))
 		{
 			number = store_number((int)v6);
-			goto LABEL_13;
 		}
 		if (!memcmp(s, "read", 4))
 		{
 			number = read_number((int)v6);
-			goto LABEL_13;
 		}
 		if (!memcmp(s, "quit", 4))
 			return (0);
 
-LABEL_13:
 		if (number)
 			printf(" Failed to do %s command\n", s);
 		else
