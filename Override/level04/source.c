@@ -24,8 +24,8 @@ int main()
 			}
 			v8 = ptrace(PTRACE_PEEKUSER, v9, 44, 0);
 		} while (v8 != 11);
-	puts("no exec() for you");
-	kill(v9, 9);
+		puts("no exec() for you");
+		kill(v9, 9);
 	}
 	else
 	{

