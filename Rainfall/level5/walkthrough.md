@@ -53,7 +53,7 @@ What if we just replaced the address of `exit()` with the address of `o`? let's 
 
 The Global Offset Table holds the adresses of functions that are dynamically linked, luckily for us it is writeable!
 
-First let's get the value of `exit` in the GOT, before the program can replace it
+First let's get the value of `exit` in the GOT, before the program can replace it.
 ```shell
 level5@RainFall:~$ gdb ./level5
 [...]

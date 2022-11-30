@@ -15,7 +15,6 @@ void n(void)
 	exit(1);
 }
 
-
 int main(void)
 {
 	n();
