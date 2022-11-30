@@ -21,6 +21,7 @@ char *pp(char *dest)
 	char b[20];
 	size_t len;
 
+	p(a, " - ");
 	p(b, " - ");
 	strcpy(dest, a);
 	len = strlen(dest);

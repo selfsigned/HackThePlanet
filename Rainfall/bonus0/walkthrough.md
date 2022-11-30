@@ -1,6 +1,6 @@
 # Bonus 0
 
-In pp we can see that a string is read into a 4096 characters size buffer and a  NULL terminator is placed if there's a newline before 10 characters in and a call to strncpy.
+In pp we can see that a string is read into a 4096 characters size buffer and a NULL terminator replaces the first found newline and a call to strncpy.
 `man strncpy` tells us that if there's no '\0' within n characters the string won't be NULL terminated. 
 Which means we can blow past the 20 char limit and get strcat to return a + b + space char + b, overflowing the buffer in main.
 
