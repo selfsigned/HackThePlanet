@@ -3,12 +3,17 @@
 
 unsigned int m;
 
+int p(char *format)
+{
+	return (printf(format));
+}
+
 void n(void)
 {
-	unsigned int s;
+	char s[520];
 
-	fgets(&s, 512, stdin);
-	p(&s);
+	fgets(s, 512, stdin);
+	p(s);
 	if (m == 16930116) {
 		system("/bin/cat /home/user/level5/.pass");
 	}
