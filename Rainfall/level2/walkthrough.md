@@ -1,23 +1,28 @@
 # Level 2
 
 Here we also have a vulnerable `gets()` with a buffer overflow of 76 characters in. The difficulty this time is that we can't just give it a shellcode or use a ret2libc attack as the program will detect any return address starting with `0xb` and exit. We therefore can't directly use a stack address.
-```C
-
-    sym.imp.gets(&src);
-    ret = __builtin_return_address(0);
-    if ((ret & 0xb0000000) == 0xb0000000) {
-        printf("(%p)\n", ret);
-        exit(1);
-    }
-```
 
 ## Heap exploit
 
 We'll try to inject this [shellcode](https://shell-storm.org/shellcode/files/shellcode-811.html), getting us a shell via `execve("/bin/sh")`.
 
+To find the offset of EIP, we use a [pattern generator](https://wiremask.eu/tools/buffer-overflow-pattern-generator/).
+```shell
+level2@RainFall:~$ gdb -q level2 
+Reading symbols from /home/user/level2/level2...(no debugging symbols found)...done.
+(gdb) R
+Starting program: /home/user/level2/level2
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0A6Ac72Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+
+Program received signal SIGSEGV, Segmentation fault.
+0x37634136 in ?? ()
+```
+Which tells us the offset is 80.
+
 Conveniently, strdup is called at the end of the program, allowing us to store our buffer overflow in the heap, well outside the `0xb` range and call it directly. Our exploit will look like this:
 
-`shellcode (28 bytes) | padding (76 bytes + 4 bytes of alignment) | address of this buffer in the heap (little-endian)`
+`shellcode (28 bytes) | padding (80 - len(shellcode)) | address of this buffer in the heap (little-endian)`
 
 ### Finding the address of the buffer 
 We now need to find the return address of `strdup()`, to do this we can either use `gdb` and inspect `eax` after the call to strdup, or more easily just use `ltrace`.
@@ -60,4 +65,4 @@ cat /home/user/level3/.pass
 🥳
 
 ## Other solutions
-Using a rop gadget could also help us bypass the check and run a ret2libc attack or shellcode
+Using a rop gadget could also help us bypass the check and run a ret2libc attack or shellcode.
