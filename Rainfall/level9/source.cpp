@@ -26,7 +26,7 @@ class N {
 	}
 };
 
-int main(int argc, const char **argv, const char **envp)
+int main(int argc, const char **argv)
 {
 	N *a;
 	N *b;
@@ -37,5 +37,5 @@ int main(int argc, const char **argv, const char **envp)
 	a = new N(5);
 	b = new N(6);
 	a->setAnnotation(argv[1]);
-	return ( (b->*(b->func))(*a) );
+	return (b->*(b->func))(*a);
 }
