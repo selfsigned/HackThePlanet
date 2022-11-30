@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int language;
 
@@ -25,15 +26,15 @@ int greetuser(char src)
 
 int main(int argc, const char **argv)
 {
-	char v4[76];
-	char dest[76];
+	char str1[76];
+	char str2[76];
 	char *env_lang;
 
 	if (argc != 3)
 		return 1;
-	memset(dest, 0, sizeof(dest));
-	strncpy(dest, argv[1], 40);
-	strncpy(&dest[40], argv[2], 32);
+	memset(str2, 0, sizeof(str2));
+	strncpy(str2, argv[1], 40);
+	strncpy(&str2[40], argv[2], 32);
 	env_lang = getenv("LANG");
 	if (env_lang)
 	{
@@ -46,6 +47,6 @@ int main(int argc, const char **argv)
 			language = 2;
 		}
 	}
-	memcpy(v4, dest, sizeof(v4));
-	return greetuser(v4[0]);
+	memcpy(str1, str2, sizeof(str1));
+	return greetuser(str1[0]);
 }
