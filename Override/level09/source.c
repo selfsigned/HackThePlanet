@@ -36,16 +36,12 @@ int set_username(int64_t a1)
 
 int handle_msg()
 {
-	char v1[140];
-	int64_t v2 = 0;
-	int64_t v3 = 0;
-	int64_t v4 = 0;
-	int64_t v5 = 0;
-	int64_t v6 = 0;
-	int v7 = 140;
+	char message[140]; // message
+	char username[40];
+	int length = 140; // v7 is used to store the length of the message
 
-	set_username((int64_t)v1);
-	set_msg((int64_t)v1);
+	set_username((int64_t)message);
+	set_msg((int64_t)message);
 	return puts(">: Msg sent!");
 }
 
