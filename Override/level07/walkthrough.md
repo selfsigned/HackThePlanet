@@ -16,3 +16,8 @@ Breakpoint 1 at 0x80486dd
 # 0xffffd5d4 is the value of the passed argument,
 # 0xffffd5b0 is where it is being stored inside `read_number`
 ```
+
+By trial and error, we find that the saved EIP is at index 114.
+Trying to store a number at 114 tells us the index is reserved for Wil, so using [bitwiseCMD](https://bitwisecmd.com/) (`MIN_INT | 114`) we get index -2147483534.
+Storing an integer at that index lets us overwrite the EIP.
+Now we just need to store our Ret2Libc attack on indices 114, 115 and 116.

@@ -30,11 +30,6 @@ int get_unum()
 	return v1[0];
 }
 
-void prog_timeout()
-{
-	exit(1);
-}
-
 int store_number(int a1)
 {
 	unsigned int unum;
@@ -70,14 +65,14 @@ int read_number(int a1)
 
 int main(int argc, const char **argv, const char **envp)
 {
-	char v6[400];
+	int storage[100];
 	int number;
 	char s[4];
 	int v9;
 	int v10;
 	int v11;
-	int v12;
-	unsigned int v13;
+	int v12; 
+	unsigned int v13; 
 
 	v13 = __readgsdword(20);
 	number = 0;
@@ -86,7 +81,7 @@ int main(int argc, const char **argv, const char **envp)
 	v10 = 0;
 	v11 = 0;
 	v12 = 0;
-	memset(v6, 0, sizeof(v6));
+	memset(storage, 0, sizeof(storage));
 	while (*argv)
 	{
 		memset((void *)*argv, 0, strlen(*argv));
@@ -98,16 +93,17 @@ int main(int argc, const char **argv, const char **envp)
 		++envp;
 	}
 	puts(
-	"----------------------------------------------------\n"
-	"  Welcome to wil's crappy number storage service!   \n"
-	"----------------------------------------------------\n"
-	" Commands:                                          \n"
-	"    store - store a number into the data storage    \n"
-	"    read  - read a number from the data storage     \n"
-	"    quit  - exit the program                        \n"
-	"----------------------------------------------------\n"
-	"   wil has reserved some storage :>                 \n"
-	"----------------------------------------------------\n");
+		"----------------------------------------------------\n"
+		"  Welcome to wil's crappy number storage service!   \n"
+		"----------------------------------------------------\n"
+		" Commands:                                          \n"
+		"    store - store a number into the data storage    \n"
+		"    read  - read a number from the data storage     \n"
+		"    quit  - exit the program                        \n"
+		"----------------------------------------------------\n"
+		"   wil has reserved some storage :>                 \n"
+		"----------------------------------------------------\n"
+	);
 	while (1)
 	{
 		printf("Input command: ");
@@ -116,11 +112,11 @@ int main(int argc, const char **argv, const char **envp)
 		s[strlen(s) - 1] = 0;
 		if (!memcmp(s, "store", 5))
 		{
-			number = store_number((int)v6);
+			number = store_number((int)storage);
 		}
 		if (!memcmp(s, "read", 4))
 		{
-			number = read_number((int)v6);
+			number = read_number((int)storage);
 		}
 		if (!memcmp(s, "quit", 4))
 			return (0);
