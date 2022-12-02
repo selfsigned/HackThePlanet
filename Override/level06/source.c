@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <sys/ptrace.h>
+#include <string.h>
+#include <stdlib.h>
 
 int auth(char *s, int a2)
 {
@@ -34,7 +36,6 @@ int main(int argc, const char **argv, const char **envp)
 	char s[28];
 	unsigned int v6;
 
-	v6 = __readgsdword(0x14u);
 	puts("***********************************");
 	puts("*\t\tlevel06\t\t  *");
 	puts("***********************************");
