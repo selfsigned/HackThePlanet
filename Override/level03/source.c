@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-// #include <intrin.h>
 
 int decrypt(char input)
 {
@@ -10,10 +9,9 @@ int decrypt(char input)
 	unsigned int v3;
 	char v4[29];
 
-	v4[17] = __readgsdword(20);
 	strcpy(v4, "Q}|u`sfg~sf{}|a3");
 	v3 = strlen(v4);
-	for ( i = 0; i < v3; ++i )
+	for (i = 0; i < v3; ++i)
 		v4[i] ^= input;
 	if (!strcmp(v4, "Congratulations!"))
 		return (system("/bin/sh"));
