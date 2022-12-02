@@ -1,5 +1,9 @@
 #include <sys/ptrace.h>
 #include <sys/wait.h>
+#include <sys/prctl.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdio.h>
 
 int main()
 {
@@ -14,6 +18,7 @@ int main()
 	memset(s, 0, sizeof(s));
 	if (v9)
 	{
+		/* Parent process */
 		do {
 			wait(&stat_loc);
 			v6 = stat_loc;
@@ -29,6 +34,7 @@ int main()
 	}
 	else
 	{
+		/* Child process */
 		prctl(1, 1);
 		ptrace(PTRACE_TRACEME, 0, 0, 0);
 		puts("Give me some shellcode, k");
