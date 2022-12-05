@@ -3,15 +3,15 @@
 #include <string.h>
 #include <stdlib.h>
 
-int auth(char *s, int a2)
+int auth(char *serial, int input_number)
 {
 	int i;
-	int v4;
-	int v5;
+	int computed_value;
+	int s_len;
 
-	s[strcspn(s, "\n")] = 0;
-	v5 = strnlen(s, 32);
-	if (v5 <= 5)
+	serial[strcspn(serial, "\n")] = 0;
+	s_len = strnlen(serial, 32);
+	if (s_len <= 5)
 		return 1;
 	if (ptrace(PTRACE_TRACEME, 0, 1, 0) == -1) {
 		puts("\x1B[32m.---------------------------.");
@@ -20,33 +20,32 @@ int auth(char *s, int a2)
 		return (1);
 	}
 	else {
-		v4 = (s[3] ^ 0x1337) + 6221293;
-		for (i = 0; i < v5; ++i) {
-			if (s[i] <= 31)
+		computed_value = (serial[3] ^ 0x1337) + 6221293;
+		for (i = 0; i < s_len; ++i) {
+			if (serial[i] <= 31)
 				return (1);
-			v4 += (v4 ^ (unsigned int)s[i]) % 1337;
+			computed_value += (computed_value ^ (unsigned int)serial[i]) % 1337;
 		}
-		return a2 != v4;
+		return input_number != computed_value;
 	}
 }
 
 int main(int argc, const char **argv, const char **envp)
 {
-	int v4;
-	char s[28];
-	unsigned int v6;
+	int input_number;
+	char serial[32];
 
 	puts("***********************************");
 	puts("*\t\tlevel06\t\t  *");
 	puts("***********************************");
 	printf("-> Enter Login: ");
-	fgets(s, 32, stdin);
+	fgets(serial, 32, stdin);
 	puts("***********************************");
 	puts("***** NEW ACCOUNT DETECTED ********");
 	puts("***********************************");
 	printf("-> Enter Serial: ");
-	scanf("%u", &v4);
-	if (auth(s, v4))
+	scanf("%u", &input_number);
+	if (auth(serial, input_number))
 		return (1);
 	puts("Authenticated!");
 	system("/bin/sh");
