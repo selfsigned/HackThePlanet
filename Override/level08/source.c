@@ -6,17 +6,15 @@
 #include <fcntl.h>
 #include <string.h>
 
-uint64_t  log_wrapper(FILE *a1, const char *a2, const char *a3)
+void	log_wrapper(FILE *stream, const char *message, const char *a3)
 {
 	char dest[264];
-	uint64_t v6;
 
-	v6 = __readfsqword(40);
-	strcpy(dest, a2);
-	snprintf(&dest[strlen(dest)], 254 - strlen(dest), a3);
+	strcpy(dest, message);
+	snprintf(dest, 254 - strlen(dest), a3);
 	dest[strcspn(dest, "\n")] = 0;
-	fprintf(a1, "LOG: %s\n", dest);
-	return (__readfsqword(40) ^ v6);
+	fprintf(stream, "LOG: %s\n", dest);
+	return ;
 }
 
 int main(int argc, const char **argv)
@@ -26,9 +24,7 @@ int main(int argc, const char **argv)
 	int fd;
 	char buf;
 	char dest[104];
-	uint64_t v9;
 
-	v9 = __readfsqword(40);
 	buf = -1;
 	if (argc != 2)
 		printf("Usage: %s filename\n", *argv);
