@@ -25,7 +25,7 @@ int get_unum()
 
 	v1[0] = 0;
 	fflush(stdout);
-	scanf("%u", v1); // &unk_8048AD0
+	scanf("%u", v1);
 	clear_stdin();
 	return v1[0];
 }
@@ -67,20 +67,10 @@ int main(int argc, const char **argv, const char **envp)
 {
 	int storage[100];
 	int number;
-	char s[4];
-	int v9;
-	int v10;
-	int v11;
-	int v12; 
-	unsigned int v13; 
+	char input[20];
 
-	v13 = __readgsdword(20);
 	number = 0;
-	*(uint32_t *)s = 0;
-	v9 = 0;
-	v10 = 0;
-	v11 = 0;
-	v12 = 0;
+	memset(input, 0, sizeof(input));
 	memset(storage, 0, sizeof(storage));
 	while (*argv)
 	{
@@ -108,27 +98,23 @@ int main(int argc, const char **argv, const char **envp)
 	{
 		printf("Input command: ");
 		number = 1;
-		fgets(s, 20, stdin);
-		s[strlen(s) - 1] = 0;
-		if (!memcmp(s, "store", 5))
+		fgets(input, 20, stdin);
+		input[strlen(input) - 1] = 0;
+		if (!memcmp(input, "store", 5))
 		{
 			number = store_number((int)storage);
 		}
-		if (!memcmp(s, "read", 4))
+		if (!memcmp(input, "read", 4))
 		{
 			number = read_number((int)storage);
 		}
-		if (!memcmp(s, "quit", 4))
+		if (!memcmp(input, "quit", 4))
 			return (0);
 
 		if (number)
-			printf(" Failed to do %s command\n", s);
+			printf(" Failed to do %s command\n", input);
 		else
-			printf(" Completed %s command successfully\n", s);
-		*(uint32_t *)s = 0;
-		v9 = 0;
-		v10 = 0;
-		v11 = 0;
-		v12 = 0;
+			printf(" Completed %s command successfully\n", input);
+		memset(input, 0, sizeof(input));
 	}
 }
