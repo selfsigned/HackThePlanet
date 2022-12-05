@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
+
+#include "source.h"
 
 int secret_backdoor()
 {
@@ -9,7 +13,7 @@ int secret_backdoor()
 	return (system(s));
 }
 
-char *set_msg(int64_t a1)
+char *set_msg(leet msg)
 {
 	char s[1024];
 
@@ -17,10 +21,10 @@ char *set_msg(int64_t a1)
 	puts(">: Msg @Unix-Dude");
 	printf(">>: ");
 	fgets(s, 1024, stdin);
-	return strncpy((char *)a1, s, *(int *)(a1 + 180));
+	return strncpy(msg.message, s, msg.length);
 }
 
-int set_username(int64_t a1)
+int set_username(leet msg)
 {
 	char s[140];
 	int i;
@@ -30,18 +34,16 @@ int set_username(int64_t a1)
 	printf(">>: ");
 	fgets(s, 128, stdin);
 	for (i = 0; i <= 40 && s[i]; ++i)
-		*(char *)(a1 + i + 140) = s[i];
-	return printf(">: Welcome, %s", (const char *)(a1 + 140));
+		*(msg.username + i) = s[i];
+	return printf(">: Welcome, %s", msg.username);
 }
 
 int handle_msg()
 {
-	char message[140]; // message
-	char username[40];
-	int length = 140; // v7 is used to store the length of the message
+	leet message = {.length = 140};
 
-	set_username((int64_t)message);
-	set_msg((int64_t)message);
+	set_username(message);
+	set_msg(message);
 	return puts(">: Msg sent!");
 }
 
