@@ -9,7 +9,7 @@ int main()
 {
 	int stat_loc = 0;
 	char s[128];
-	int v8 = 0;
+	int orig_eax = 0;
 	pid_t child;
 
 	child = fork();
@@ -24,8 +24,8 @@ int main()
 				puts("child is exiting...");
 				return (0);
 			}
-			v8 = ptrace(PTRACE_PEEKUSER, child, 44, 0);
-		} while (v8 != 11);
+			orig_eax = ptrace(PTRACE_PEEKUSER, child, (ORIG_EAX*4), 0); // system call in child detection
+		} while (orig_eax != 11);
 		puts("no exec() for you");
 		kill(child, 9);
 	}
