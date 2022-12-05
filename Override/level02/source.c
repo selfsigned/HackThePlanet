@@ -5,12 +5,10 @@
 
 int main()
 {
-	char input_password[96];
-	int v5 = 0;
-	char password[48];
-	char input_username[96];
-	int v8 = 0;
-	int v9 = 0;
+	char input_password[100];
+	char password[41];
+	char input_username[100];
+	int char_written = 0;
 	FILE *stream = NULL;
 
 	bzero(input_username, sizeof(input_username));
@@ -22,9 +20,9 @@ int main()
 		fwrite("ERROR: failed to open password file\n", 1, 36, stderr);
 		exit(1);
 	}
-	v9 = fread(password, 1, 41, stream);
+	char_written = fread(password, 1, 41, stream);
 	password[strcspn(password, "\n")] = 0;
-	if (v9 != 41)
+	if (char_written != 41)
 	{
 		fwrite("ERROR: failed to read password file\n", 1, 36, stderr);
 		fwrite("ERROR: failed to read password file\n", 1, 36, stderr);
