@@ -19,27 +19,26 @@ int clear_stdin()
 	return result;
 }
 
-int get_unum()
-{
-	int v1[3];
-
-	v1[0] = 0;
-	fflush(stdout);
-	scanf("%u", v1);
-	clear_stdin();
-	return v1[0];
-}
-
-int store_number(int a1)
+unsigned int get_unum()
 {
 	unsigned int unum;
-	unsigned int v3;
+
+	fflush(stdout);
+	scanf("%u", &unum);
+	clear_stdin();
+	return unum; 
+}
+
+int store_number(int *data)
+{
+	unsigned int unum;
+	unsigned int index;
 
 	printf(" Number: ");
 	unum = get_unum();
 	printf(" Index: ");
-	v3 = get_unum();
-	if (v3 == 3 * (v3 / 3) || HIBYTE(unum) == 183)
+	index = get_unum();
+	if ((index % 3 == 0) || HIBYTE(unum) == 183)
 	{
 		puts(" *** ERROR! ***");
 		puts("   This index is reserved for wil!");
@@ -48,18 +47,18 @@ int store_number(int a1)
 	}
 	else
 	{
-		*(uint32_t *)(a1 + 4 * v3) = unum;
+		data[index] = unum;
 		return (0);
 	}
 }
 
-int read_number(int a1)
+int read_number(int *data)
 {
-	int unum;
+	unsigned int unum;
 
 	printf(" Index: ");
 	unum = get_unum();
-	printf(" Number at data[%u] is %u\n", unum, *(uint32_t *)(a1 + 4 * unum));
+	printf(" Number at data[%u] is %u\n", unum, data[unum]);
 	return 0;
 }
 
@@ -102,11 +101,11 @@ int main(int argc, const char **argv, const char **envp)
 		input[strlen(input) - 1] = 0;
 		if (!memcmp(input, "store", 5))
 		{
-			number = store_number((int)storage);
+			number = store_number(storage);
 		}
 		if (!memcmp(input, "read", 4))
 		{
-			number = read_number((int)storage);
+			number = read_number(storage);
 		}
 		if (!memcmp(input, "quit", 4))
 			return (0);
