@@ -6,14 +6,14 @@
 int decrypt(char input)
 {
 	unsigned int i;
-	unsigned int v3;
-	char v4[29];
+	unsigned int length;
+	char dictionary[29];
 
-	strcpy(v4, "Q}|u`sfg~sf{}|a3");
-	v3 = strlen(v4);
-	for (i = 0; i < v3; ++i)
-		v4[i] ^= input;
-	if (!strcmp(v4, "Congratulations!"))
+	strcpy(dictionary, "Q}|u`sfg~sf{}|a3");
+	length = strlen(dictionary);
+	for (i = 0; i < length; ++i)
+		dictionary[i] ^= input;
+	if (!strcmp(dictionary, "Congratulations!"))
 		return (system("/bin/sh"));
 	else
 		return (puts("\nInvalid Password"));
@@ -22,7 +22,7 @@ int decrypt(char input)
 int test(int a1, int a2)
 {
 	int result;
-	char v3;
+	char input;
 
 	switch (a2 - a1)
 	{
@@ -44,8 +44,8 @@ int test(int a1, int a2)
 			result = decrypt(a2 - a1);
 			break;
 		default:
-			v3 = rand();
-			result = decrypt(v3);
+			input = rand();
+			result = decrypt(input);
 			break;
 	}
 	return (result);
@@ -53,11 +53,11 @@ int test(int a1, int a2)
 
 int main()
 {
-	unsigned int v3;
+	unsigned int seed;
 	int savedregs;
 
-	v3 = time(0);
-	srand(v3);
+	seed = time(0);
+	srand(seed);
 	puts("***********************************");
 	puts("*\t\tlevel03\t\t**");
 	puts("***********************************");
