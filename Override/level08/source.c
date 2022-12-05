@@ -6,12 +6,12 @@
 #include <fcntl.h>
 #include <string.h>
 
-void	log_wrapper(FILE *stream, const char *message, const char *a3)
+void	log_wrapper(FILE *stream, const char *message, const char *argv1)
 {
 	char dest[264];
 
 	strcpy(dest, message);
-	snprintf(dest, 254 - strlen(dest), a3);
+	snprintf(dest, 254 - strlen(dest), argv1);
 	dest[strcspn(dest, "\n")] = 0;
 	fprintf(stream, "LOG: %s\n", dest);
 	return ;
@@ -19,8 +19,8 @@ void	log_wrapper(FILE *stream, const char *message, const char *a3)
 
 int main(int argc, const char **argv)
 {
-	FILE *v4;
-	FILE *stream;
+	FILE *backup_log;
+	FILE *argv_stream;
 	int fd;
 	char buf;
 	char dest[104];
@@ -28,15 +28,15 @@ int main(int argc, const char **argv)
 	buf = -1;
 	if (argc != 2)
 		printf("Usage: %s filename\n", *argv);
-	v4 = fopen("./backups/.log", "w");
-	if (!v4)
+	backup_log = fopen("./backups/.log", "w");
+	if (!backup_log)
 	{
 		printf("ERROR: Failed to open %s\n", "./backups/.log");
 		exit(1);
 	}
-	log_wrapper(v4, "Starting back up: ", argv[1]);
-	stream = fopen(argv[1], "r");
-	if (!stream)
+	log_wrapper(backup_log, "Starting back up: ", argv[1]);
+	argv_stream = fopen(argv[1], "r");
+	if (!argv_stream)
 	{
 		printf("ERROR: Failed to open %s\n", argv[1]);
 		exit(1);
@@ -51,13 +51,13 @@ int main(int argc, const char **argv)
 	}
 	while (true)
 	{
-		buf = fgetc(stream);
+		buf = fgetc(argv_stream);
 		if (buf == -1)
 			break;
 		write(fd, &buf, 1);
 	}
-	log_wrapper(v4, "Finished back up ", argv[1]);
-	fclose(stream);
+	log_wrapper(backup_log, "Finished back up ", argv[1]);
+	fclose(argv_stream);
 	close(fd);
 	return (0);
 }
