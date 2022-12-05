@@ -9,28 +9,25 @@ int main()
 {
 	int stat_loc = 0;
 	char s[128];
-	int v6;
-	int v7;
 	int v8 = 0;
-	pid_t v9;
+	pid_t child;
 
-	v9 = fork();
+	child = fork();
 	memset(s, 0, sizeof(s));
-	if (v9)
+	if (child)
 	{
 		/* Parent process */
 		do {
 			wait(&stat_loc);
-			v6 = stat_loc;
-			if ((stat_loc & 127) == 0 || (v7 = stat_loc, (char)((stat_loc & 127) + 1) >> 1 > 0))
+			if (WTERMSIG(stat_loc) == 0 || WIFSIGNALED(stat_loc))
 			{
 				puts("child is exiting...");
 				return (0);
 			}
-			v8 = ptrace(PTRACE_PEEKUSER, v9, 44, 0);
+			v8 = ptrace(PTRACE_PEEKUSER, child, 44, 0);
 		} while (v8 != 11);
 		puts("no exec() for you");
-		kill(v9, 9);
+		kill(child, 9);
 	}
 	else
 	{
