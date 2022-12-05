@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char* a_user_name;
+char a_user_name[64];
 
 int verify_user_name()
 {

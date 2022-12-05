@@ -2,7 +2,7 @@
 
 Before us we have a binary which represents an admin login prompt.
 First, it asks us for the username which it `fgets` into a global variable called `a_user_name`, and if it matches `dat_wil`, we can input a password that is then checked against "admin". This however is just a silly attempt at trolling from wil.
-The password will then be read into a 64 byte buffer with `fgets`, but here fgets will read up to 256 bytes, so we can overflow.
+The password will then be read into a 64 bytes buffer with `fgets`, but here fgets will read up to 100 bytes, so we can overflow.
 
 Let's use our trusty [pattern generator](https://wiremask.eu/tools/buffer-overflow-pattern-generator/)
 ```shell
