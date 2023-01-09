@@ -1,4 +1,4 @@
-# Gibbe password pls
+# Hidden in plain sight
 
 ## Exploit
 On the password recovery page `${URL}/?page=recover` we can see a hidden form containing the webmaster email.
@@ -17,6 +17,7 @@ $ curl -s -X POST --data "mail=xperrin@student.42.fr&Submit=Submit" "${URL}/?pag
 
 ## Fix
 [OWASP](https://owasp.org/www-community/attacks/Web_Parameter_Tampering)
+
 The server should never assume that the data the client sent is trustworthy and should validate every argument.
 Here it shouldn't let the user specify a mail address at all and should instead retrieve it server-side.
 Also, hidden fields should never be used with secure information.
