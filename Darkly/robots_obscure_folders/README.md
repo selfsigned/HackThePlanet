@@ -17,3 +17,6 @@ Toujours pas tu vas craquer non ?
 Tu veux de l'aide ? Moi aussi !
 ```
 No need to code a fancy script.
+
+## Fix
+Don't rely on security by obscurity, it never ends up well.
